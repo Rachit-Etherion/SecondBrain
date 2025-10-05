@@ -4,9 +4,12 @@ import  jwt from "jsonwebtoken";
 import { USER_JWT_SECRET } from "./config.js";
 import { userMiddleware } from "./middleware.js";
 import { randomBytes } from "crypto";
+import cors from "cors"
+
 
 const app = express();
 app.use(express.json());
+app.use(cors())
 
 app.post("/api/v1/signup",async (req, res) => {
     // TODO: Zod
@@ -62,6 +65,8 @@ app.post("/api/v1/content", userMiddleware ,async (req, res) => {
     //@ts-ignore
     const userId = req.userId;
 
+    // console.log("Received content:", { link, type, title, userId });
+
     try{
         await ContentModel.create({
             link,
@@ -73,6 +78,7 @@ app.post("/api/v1/content", userMiddleware ,async (req, res) => {
 
         res.json({message: "Content added"});
     } catch(err) {
+        // console.log("Error while writing content:", err);
         res.status(500).json({
             error: "error while writing content"
         });
@@ -124,7 +130,7 @@ app.post("/api/v1/brain/share", userMiddleware , async (req, res) => {
 
         res.json({
             message: "Sared Linke created",
-            saredurl: `${req.protocol}://${req.get("host")}/api/v1/${hash}`
+            hash: hash
         });
     } catch(err) {
         res.status(500).json({

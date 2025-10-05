@@ -22,7 +22,7 @@ const TagSchema = new mongoose.Schema({
     title: {type: String, required: true, unique: true}
 });
 
-const contentTypes = ['image', 'video', 'article', 'audio'];
+const contentTypes = ["Youtube","Twitter"];
 
 const ContentSchema = new mongoose.Schema({
     link: {type: String, required: true},
